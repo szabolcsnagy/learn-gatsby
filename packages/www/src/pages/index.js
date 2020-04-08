@@ -1,7 +1,17 @@
 import React from "react";
-
+import { Container, Heading, Button, Flex } from "theme-ui";
 export default (props) => (
-  <div>
-    <h1>Our site</h1>
-  </div>
+  <Container>
+    <Flex sx={{ flexDirection: "column", padding: 3 }}>
+      <Heading>Get Stuff Done</Heading>
+      <Button
+        sx={{ marginTop: 2 }}
+        onClick={() => {
+          alert("clicked");
+        }}
+      >
+        Log In
+      </Button>
+    </Flex>
+  </Container>
 );
