@@ -2,6 +2,7 @@
 const React = require("react");
 const { ThemeProvider } = require("theme-ui");
 const { deep } = require("@theme-ui/presets");
+const { Provider } = require("./identity-context");
 
 // Deep preset doesn't contain sizes
 // while the theme sets sizes.container as the max-width for the site
@@ -12,8 +13,10 @@ const tokens = {
 };
 
 const ThemeWrapper = ({ element }) => (
-  // element prop is provided by Gatsby
-  <ThemeProvider theme={tokens}>{element}</ThemeProvider>
+  <Provider>
+    {/* prop.element is provided by Gatsby */}
+    <ThemeProvider theme={tokens}>{element}</ThemeProvider>
+  </Provider>
 );
 
 module.exports = ThemeWrapper;

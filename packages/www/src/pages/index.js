@@ -1,22 +1,20 @@
 import React from "react";
 import { Container, Heading, Button, Flex } from "theme-ui";
-import netlifyIdentity from "netlify-identity-widget";
+import Menu from "../components/Menu";
+import { IdentityContext } from "../../identity-context";
 
 export default (props) => {
-  // useEffect only runs on the browser and not during gatsby build
-  React.useEffect(() => {
-    // needs to run on the client side
-    netlifyIdentity.init({});
-  }, []); // run it once
+  const { identity } = React.useContext(IdentityContext);
 
   return (
     <Container>
+      <Menu />
       <Flex sx={{ flexDirection: "column", padding: 3 }}>
-        <Heading>Get Stuff Done</Heading>
+        <Heading as="h1">Get Stuff Done</Heading>
         <Button
           sx={{ marginTop: 2 }}
           onClick={() => {
-            netlifyIdentity.open();
+            identity.open();
           }}
         >
           Log In
