@@ -2,6 +2,7 @@ import React from "react";
 import { Router } from "@reach/router";
 import { IdentityContext } from "../../identity-context";
 import Menu from "../components/Menu.jsx";
+import Dashboard from "../components/Dashboard.jsx";
 import { Heading, Button, Flex, Container } from "theme-ui";
 
 const DashLoggedOut = () => {
@@ -22,20 +23,13 @@ const DashLoggedOut = () => {
   );
 };
 
-const Dash = () => {
-  // deconstruct the user from the provider
-  const { user } = React.useContext(IdentityContext);
-
-  return <div>Dash hasUser: {user && user.user_metadata.full_name}</div>;
-};
-
 export default (props) => {
   const { user } = React.useContext(IdentityContext);
   return (
     <Container>
       <Menu />
       <Router>
-        {user ? <Dash path="/app" /> : <DashLoggedOut path="/app" />}
+        {user ? <Dashboard path="/app" /> : <DashLoggedOut path="/app" />}
       </Router>
     </Container>
   );
