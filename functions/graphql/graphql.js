@@ -29,8 +29,8 @@ const resolvers = {
   Mutation: {
     // The first argument is the parent object
     addTodo: (_, { text }) => {
-      todoIndex++;
-      const id = `key-${todoIndex}`;
+      // todoIndex++;
+      const id = `key-${Math.random()}`;
       todos[id] = { id, text, done: false };
       return todos[id];
     },
