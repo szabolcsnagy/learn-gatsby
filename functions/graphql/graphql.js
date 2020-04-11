@@ -53,4 +53,7 @@ const server = new ApolloServer({
   introspection: true,
 });
 
-exports.handler = server.createHandler();
+exports.handler = server.createHandler({
+  // to allow api access from localhost
+  cors: { origin: "http://localhost:8000", credentials: true },
+});
