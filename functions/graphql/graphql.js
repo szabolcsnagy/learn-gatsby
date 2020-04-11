@@ -35,8 +35,11 @@ const resolvers = {
       return todos[id];
     },
     updateTodoDone: (_, { id }) => {
-      todos[id].done = !todos[id].done;
-      return todos[id];
+      const todoToUpdate = todos[id];
+      if (todoToUpdate) {
+        todoToUpdate.done = !todoToUpdate.done;
+      }
+      return todos[id]; // return undefined if not exists; that is fine a Todo is nullable
     },
   },
 };

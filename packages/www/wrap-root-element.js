@@ -4,7 +4,7 @@ const { ThemeProvider } = require("theme-ui");
 const { deep } = require("@theme-ui/presets");
 const { Provider } = require("./identity-context");
 
-// Deep preset doesn't contain sizes
+// Deep theme preset doesn't contain sizes
 // while the theme sets sizes.container as the max-width for the site
 // https://github.com/system-ui/theme-ui/blob/master/packages/preset-deep/src/index.ts#L7
 const tokens = {
