@@ -11,12 +11,31 @@ const {
   InMemoryCache,
 } = require("@apollo/client");
 
+// setContext will prepare the http headers with the user token
+const { setContext } = require("apollo-link-context");
+const netlifyIdentity = require("netlify-identity-widget");
+
+const authLink = setContext((_, { headers }) => {
+  // take the Bearer token from the netlify user
+  const user = netlifyIdentity.currentUser();
+  const token = user.token.access_token;
+  // and add it to the headers
+  return {
+    headers: {
+      ...headers, // keep the previous headers
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
+const httpLink = new HttpLink({
+  uri: "https://learn-gatsby-gh.netlify.com/.netlify/functions/graphql",
+});
+
 // create apollo client to fetch data from graphQL endpoint.
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: new HttpLink({
-    uri: "https://learn-gatsby-gh.netlify.com/.netlify/functions/graphql",
-  }),
+  link: authLink.concat(httpLink),
 });
 
 exports.wrapRootElement = ({ element }) => {

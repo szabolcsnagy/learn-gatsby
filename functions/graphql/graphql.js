@@ -22,7 +22,12 @@ let todoIndex = 0;
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    todos: () => {
+    todos: (parent, args, context) => {
+      if (!context.user) {
+        // no logged in user
+        return [];
+      }
+
       return Object.values(todos);
     },
   },
@@ -30,7 +35,7 @@ const resolvers = {
     // The first argument is the parent object
     addTodo: (_, { text }) => {
       // todoIndex++;
-      const id = `key-${Math.random()}`;
+      const id = `key-${parseInt(Math.random() * 10000)}`;
       todos[id] = { id, text, done: false };
       return todos[id];
     },
@@ -48,6 +53,19 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  // make sure the server only serve the user
+  // this request belongs to.
+  // Take the request.context
+  context: ({ context }) => {
+    console.log("Request context", context.clientContext);
+    if (context.clientContext.user) {
+      // returns the context object that will be passed
+      // to the resolver as the 3rd argument
+      return { user: context.clientContext.user.sub };
+    } else {
+      return {};
+    }
+  },
 
   // By default GraphQL playground and introspection are
   // disabled and they need to be explicitly enabled here.

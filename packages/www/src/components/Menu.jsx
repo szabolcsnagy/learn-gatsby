@@ -5,7 +5,7 @@ import { IdentityContext } from "../../identity-context";
 
 const Menu = () => {
   const { user, identity } = React.useContext(IdentityContext);
-  console.log("IDENTITY", identity);
+
   return (
     <Flex as="nav">
       <NavLink as={Link} to="/" p={2}>

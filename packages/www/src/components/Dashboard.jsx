@@ -15,6 +15,7 @@ const ADD_TODO = gql`
 const UPDATE_TODO_DONE = gql`
   mutation UpdateTodoDone($id: ID!) {
     updateTodoDone(id: $id) {
+      id
       text
       done
     }
@@ -53,15 +54,16 @@ const Dashboard = () => {
   // deconstruct the user from the provider
   // const { user } = React.useContext(IdentityContext);
 
+  // useQuery will fetch data when it is initialized
+  // and refetch needs to be called every time a refesh is needed
+  const { loading, error, data, refetch } = useQuery(GET_TODOS);
+
   // useMutation return a function that takes an object
   // with the variables required to perform that mutation.
   // The 'data' is destructured from the response of that
   // mutation.
   const [addTodo] = useMutation(ADD_TODO);
   const [updateTodoDone] = useMutation(UPDATE_TODO_DONE);
-  // useQuery will fetch data when it is initialized
-  // and refetch needs to be called every time a refesh is needed
-  const { loading, error, data, refetch } = useQuery(GET_TODOS);
 
   return (
     <>
@@ -93,7 +95,8 @@ const Dashboard = () => {
         {error && <div>{error.message}</div>}
         {!loading && !error && (
           <ul sx={{ listStyleType: "none" }}>
-            {data.todos.map((todo, index) => {
+            {data.todos.length === 0 ? <Flex as="li">No TODOs.</Flex> : null}
+            {data.todos.map((todo) => {
               return (
                 <Flex
                   as="li"
@@ -104,8 +107,8 @@ const Dashboard = () => {
                     // dispatch({ type: "toggleTodoDone", payload: index });
                   }}
                 >
-                  <Label htmlFor={index}>
-                    <Checkbox id={index} checked={todo.done} readOnly />
+                  <Label>
+                    <Checkbox checked={todo.done} readOnly />
                     {todo.text}
                   </Label>
                 </Flex>
