@@ -1,4 +1,8 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
+const faunadb = require("faunadb");
+const q = faunadb.query;
+
+let client = new faunadb.Client({ secret: process.env.FAUNA });
 
 // Construct a schema, using graphQL schema language
 const typeDefs = gql`
@@ -16,35 +20,64 @@ const typeDefs = gql`
   }
 `;
 
-// in memory storage of todos
-const todos = {};
-let todoIndex = 0;
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    todos: (parent, args, context) => {
+    todos: async (parent, args, context) => {
       if (!context.user) {
         // no logged in user
         return [];
       }
-
-      return Object.values(todos);
+      const result = await client.query(
+        q.Paginate(q.Match(q.Index("todos_by_user"), context.user))
+      );
+      // turn the arrays of array returned from FAUNA
+      // into an array of objects for graphQL
+      return result.data.map(([ref, done, text]) => ({
+        id: ref.id,
+        text,
+        done,
+      }));
     },
   },
   Mutation: {
     // The first argument is the parent object
-    addTodo: (_, { text }) => {
-      // todoIndex++;
-      const id = `key-${parseInt(Math.random() * 10000)}`;
-      todos[id] = { id, text, done: false };
-      return todos[id];
-    },
-    updateTodoDone: (_, { id }) => {
-      const todoToUpdate = todos[id];
-      if (todoToUpdate) {
-        todoToUpdate.done = !todoToUpdate.done;
+    addTodo: async (_, { text }, context) => {
+      if (!context.user) {
+        throw new Error("Must be authenticated to insert todos.");
       }
-      return todos[id]; // return undefined if not exists; that is fine a Todo is nullable
+
+      const result = await client.query(
+        q.Create(q.Collection("todos"), {
+          data: {
+            text,
+            done: false,
+            owner: context.user,
+          },
+        })
+      );
+      return {
+        ...result.data,
+        id: result.ref.id,
+      };
+    },
+
+    updateTodoDone: async (_, { id }, context) => {
+      if (!context.user) {
+        throw new Error("Must be authenticated to insert todos");
+      }
+
+      const result = await client.query(
+        q.Update(q.Ref(q.Collection("todos"), id), {
+          data: {
+            done: true,
+          },
+        })
+      );
+      return {
+        ...result.data,
+        id: result.ref.id,
+      };
     },
   },
 };
@@ -57,7 +90,7 @@ const server = new ApolloServer({
   // this request belongs to.
   // Take the request.context
   context: ({ context }) => {
-    console.log("Request context", context.clientContext);
+    console.log("Request context", Object.keys(context));
     if (context.clientContext.user) {
       // returns the context object that will be passed
       // to the resolver as the 3rd argument
