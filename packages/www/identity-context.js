@@ -24,15 +24,23 @@ const IdentityProvider = (props) => {
       netlifyIdentity.close();
       setUser();
     });
-
     // setting the initial value of the user
     // if we logged in this will set the current user
     const user = netlifyIdentity.currentUser();
     setUser(user);
   }, []); // run it only once
 
+  // check if the token expired
+  // console.log("IDENTITY CONTEXT PROVIDER called with", props);
+  const isTokenValid = () =>
+    user && user.token && user.token.expires_at > Date.now();
+  if (!isTokenValid()) {
+    netlifyIdentity.logout();
+  }
   return (
-    <IdentityContext.Provider value={{ identity: netlifyIdentity, user }}>
+    <IdentityContext.Provider
+      value={{ identity: netlifyIdentity, user, isTokenValid }}
+    >
       {props.children}
     </IdentityContext.Provider>
   );

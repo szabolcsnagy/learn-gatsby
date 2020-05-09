@@ -13,8 +13,8 @@ const ADD_TODO = gql`
 `;
 
 const UPDATE_TODO_DONE = gql`
-  mutation UpdateTodoDone($id: ID!) {
-    updateTodoDone(id: $id) {
+  mutation toggleTodo($id: ID!) {
+    toggleTodo(id: $id) {
       id
       text
       done
@@ -49,6 +49,7 @@ const GET_TODOS = gql`
 // };
 
 const Dashboard = () => {
+  // const { user, identity } = React.useContext(IdentityContext);
   // const [todos, dispatch] = React.useReducer(todosReducer, []);
   const inputRef = React.useRef();
   // deconstruct the user from the provider
@@ -58,6 +59,9 @@ const Dashboard = () => {
   // and refetch needs to be called every time a refesh is needed
   const { loading, error, data, refetch } = useQuery(GET_TODOS);
 
+  // if (error) {
+  //   console.log("GQL Error", Object.keys(error), error.graphQLErrors);
+  // }
   // useMutation return a function that takes an object
   // with the variables required to perform that mutation.
   // The 'data' is destructured from the response of that
@@ -75,7 +79,6 @@ const Dashboard = () => {
           if (todoText) {
             await addTodo({ variables: { text: todoText } });
             await refetch();
-            // dispatch({ type: "addTodo", payload: inputRef.current.value });
             inputRef.current.value = "";
           }
         }}
@@ -101,10 +104,9 @@ const Dashboard = () => {
                 <Flex
                   as="li"
                   key={todo.id}
-                  onClick={async () => {
+                  onClick={async (e) => {
+                    e.preventDefault(); // very important
                     await updateTodoDone({ variables: { id: todo.id } });
-                    await refetch();
-                    // dispatch({ type: "toggleTodoDone", payload: index });
                   }}
                 >
                   <Label>

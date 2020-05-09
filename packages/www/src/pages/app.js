@@ -24,12 +24,17 @@ const DashLoggedOut = () => {
 };
 
 export default (props) => {
-  const { user } = React.useContext(IdentityContext);
+  const { isTokenValid } = React.useContext(IdentityContext);
+
   return (
     <Container>
       <Menu />
       <Router>
-        {user ? <Dashboard path="/app" /> : <DashLoggedOut path="/app" />}
+        {isTokenValid() ? (
+          <Dashboard path="/app" />
+        ) : (
+          <DashLoggedOut path="/app" />
+        )}
       </Router>
     </Container>
   );

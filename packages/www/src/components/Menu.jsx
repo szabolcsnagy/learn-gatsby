@@ -4,7 +4,7 @@ import { Link } from "@reach/router";
 import { IdentityContext } from "../../identity-context";
 
 const Menu = () => {
-  const { user, identity } = React.useContext(IdentityContext);
+  const { user, identity, isTokenValid } = React.useContext(IdentityContext);
 
   return (
     <Flex as="nav">
@@ -15,7 +15,7 @@ const Menu = () => {
         Dashboard
       </NavLink>
       {/* only if a user logged in  */}
-      {user && (
+      {isTokenValid() && user && (
         <NavLink
           href="#!"
           p={2}

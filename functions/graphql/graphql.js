@@ -90,7 +90,6 @@ const server = new ApolloServer({
   // this request belongs to.
   // Take the request.context
   context: ({ context }) => {
-    console.log("Request context", Object.keys(context));
     if (context.clientContext.user) {
       // returns the context object that will be passed
       // to the resolver as the 3rd argument
@@ -103,8 +102,8 @@ const server = new ApolloServer({
   // By default GraphQL playground and introspection are
   // disabled and they need to be explicitly enabled here.
   // This should be off in production.
-  playground: true,
-  introspection: true,
+  playground: false,
+  introspection: false,
 });
 
 exports.handler = server.createHandler({
