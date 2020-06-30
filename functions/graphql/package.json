@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "apollo-server-lambda": "^2.12.0",
-    "faunadb": "^2.13.1",
-    "graphql": "^15.0.0"
+    "apollo-server-lambda": "^2.15.0",
+    "faunadb": "^2.14.2",
+    "graphql": "^15.2.0"
   }
 }
