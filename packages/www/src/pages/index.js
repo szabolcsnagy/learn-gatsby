@@ -5,6 +5,7 @@ import Menu from "../components/Menu";
 import { IdentityContext } from "../../identity-context";
 
 export default (props) => {
+  // use the netlify identity context
   const { identity, isTokenValid } = React.useContext(IdentityContext);
   const tokenValid = isTokenValid();
   return (

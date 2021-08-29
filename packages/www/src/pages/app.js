@@ -5,6 +5,7 @@ import Menu from "../components/Menu.jsx";
 import Dashboard from "../components/Dashboard.jsx";
 import { Heading, Button, Flex, Container } from "theme-ui";
 
+// logged out Dashboard state
 const DashLoggedOut = () => {
   // deconstruct the user from the provider
   const { identity } = React.useContext(IdentityContext);
@@ -14,6 +15,7 @@ const DashLoggedOut = () => {
       <Button
         sx={{ marginTop: 2 }}
         onClick={() => {
+          // open the popup for the identity provider
           identity.open();
         }}
       >
