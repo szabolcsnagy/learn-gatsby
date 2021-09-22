@@ -4,6 +4,10 @@
 
 `yarn workspace www build`
 
+## Develop Command
+
+`yarn workspace www develop`
+
 ### Publish Directory
 
 `packages/www/public`

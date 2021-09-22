@@ -1,4 +1,4 @@
-// Must use common-js iports
+// Must use common-js imports
 const React = require("react");
 const { ThemeProvider } = require("theme-ui");
 const { deep } = require("@theme-ui/presets");
@@ -10,6 +10,10 @@ const { Provider } = require("./identity-context");
 const tokens = {
   ...deep,
   sizes: { container: 1024 },
+  colors: {
+    ...deep.colors,
+    surface: "#aa2140", // extend the default theme
+  },
 };
 
 const ThemeWrapper = ({ element }) => (

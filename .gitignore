@@ -1,5 +1,5 @@
 .cache
 public
 node_modules
-.envrc
+.env*
 .DS_Store
