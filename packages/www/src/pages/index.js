@@ -4,7 +4,7 @@ import { Link } from "@reach/router";
 import Menu from "../components/Menu";
 import { IdentityContext } from "../../identity-context";
 
-export default (props) => {
+const IndexPage = (props) => {
   // use the netlify identity context
   const { identity, isTokenValid } = React.useContext(IdentityContext);
   const tokenValid = isTokenValid();
@@ -35,3 +35,5 @@ export default (props) => {
     </Container>
   );
 };
+
+export default IndexPage;

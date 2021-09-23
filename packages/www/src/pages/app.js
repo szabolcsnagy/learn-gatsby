@@ -25,7 +25,7 @@ const DashLoggedOut = () => {
   );
 };
 
-export default (props) => {
+const App = (props) => {
   const { isTokenValid } = React.useContext(IdentityContext);
 
   return (
@@ -41,3 +41,5 @@ export default (props) => {
     </Container>
   );
 };
+
+export default App;

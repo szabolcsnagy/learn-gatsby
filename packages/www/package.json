@@ -13,16 +13,16 @@
     "@apollo/client": "^3.0.0-beta.33",
     "@theme-ui/presets": "0.11.1",
     "apollo-link-context": "^1.0.20",
-    "gatsby": "^2.20.14",
-    "gatsby-plugin-create-client-paths": "^2.2.1",
+    "gatsby": "^3.14.0",
+    "gatsby-plugin-create-client-paths": "^3.14.0",
     "netlify-identity-widget": "^1.5.6",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "theme-ui": "0.11.1"
   },
   "devDependencies": {
     "babel-jest": "^27.1.0",
-    "babel-preset-gatsby": "^1.13.0",
+    "babel-preset-gatsby": "^1.14.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.1.0",
     "react-test-renderer": "^17.0.2"
